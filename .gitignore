@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Data & models (large + sensitive)
+data/raw_images/*
+!data/raw_images/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/outputs/*
+!data/outputs/.gitkeep
+data/cache_grok/
+datasets/vintext/
+datasets/vintext_processed/
+models/vietocr_finetuned/
+*.zip
+*.tar.gz
+
+# Env / secrets
+.env
+XAI_API_KEY*
+
+# IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store

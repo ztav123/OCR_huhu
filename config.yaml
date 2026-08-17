@@ -1,0 +1,64 @@
+# Vietnamese OCR Pipeline — Config
+preprocess:
+  max_edge_px: 1568       # sweet spot for Grok 4.5 tile 448x448
+  jpeg_quality: 85
+  deskew: true
+  denoise: true
+  auto_rotate_exif: true
+
+recognizer:
+  model_path: models/vietocr_finetuned/
+  fallback_model: vgg_transformer   # VietOCR base if no fine-tune
+  confidence_threshold: 0.85       # below -> fallback to OpenAI/Grok
+  device: cpu                       # or 'cuda' if GPU available
+
+layout:
+  method: heuristic                 # MVP: OpenCV heuristic
+  min_table_area_ratio: 0.02        # min table area vs image
+  line_merge_gap_px: 20             # vertical gap to merge text lines into block
+
+grok:
+  enabled: false                      # disabled by default; OpenAI is preferred
+  base_url: https://api.x.ai/v1
+  model: grok-4.5
+  api_key_env: XAI_API_KEY
+  max_tokens: 1024
+  temperature: 0.1
+  use_cache: true
+  cache_dir: data/cache_grok
+  prompt_cache_key: ocr_vn_printed_v1
+
+openai:
+  enabled: false                      # disabled (OpenAI key exhausted)
+  base_url: https://api.openai.com/v1
+  model: gpt-4o                       # or gpt-4o-mini for cheaper fallback
+  api_key_env: OPENAI_API_KEY
+  max_tokens: 1024
+  temperature: 0.1
+  use_cache: true
+  cache_dir: data/cache_openai
+  prompt_cache_key: ocr_vn_printed_v1
+
+azure:
+  enabled: true                       # primary fallback (Azure AI Foundry)
+  base_url: https://24522012-ai-agent-resource.services.ai.azure.com
+  project_path: api/projects/24522012-ai-agent-for-a-beginner
+  model: gpt-5-mini                   # deployment name on Azure
+  api_version: "2024-06-01"
+  api_key_env: AZURE_API_KEY
+  max_tokens: 1024
+  temperature: 0.1
+  use_cache: true
+  cache_dir: data/cache_azure
+
+output:
+  format: docx                      # primary
+  also_export_md: true              # markdown intermediate
+  output_dir: data/outputs
+
+paths:
+  input_dir: data/raw_images         # CLI default
+  processed_dir: data/processed
+  dataset_dir: datasets/vintext      # VinText downloaded here
+  vintext_processed_dir: datasets/vintext_processed
+  model_dir: models/vietocr_finetuned

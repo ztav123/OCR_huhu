@@ -1,0 +1,14 @@
+# Vietnamese OCR Pipeline — MVP (printed text)
+# Python 3.10+ recommended
+
+torch>=2.0.0
+torchvision>=0.15.0
+opencv-python-headless>=4.8.0
+pillow>=10.0.0
+python-docx>=1.1.0
+requests>=2.31.0
+pyyaml>=6.0.1
+tqdm>=4.66.0
+
+# VietOCR installed from git (PyPI version is broken)
+vietocr @ git+https://github.com/pbcquoc/vietocr.git
